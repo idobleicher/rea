@@ -41,11 +41,26 @@ and skip rules stay enabled. Sandbox startup failures remain actionable errors;
 REA does not retry with `--no-sandbox`. Missing extractors reported in a valid
 analysis report retain partial results and dependency names inline.
 
-Upstream sources are preserved unmodified as optional pinned submodules:
+Binwalk source is available as an optional pinned submodule:
 
 ```sh
-git submodule update --init third_party/binwalk third_party/unblob
+git submodule update --init third_party/binwalk
 ```
+
+Unblob is a separately obtained optional Linux dependency, verified at **26.6.4**,
+source revision `1fcc7a0a584a70a96c31f5a276c20944d199a089`. It is not a submodule:
+upstream test fixture filenames prevent recursive checkouts on Windows. For source
+inspection, clone the pinned revision into a Linux filesystem (including WSL's
+Linux home directory, rather than a mounted Windows drive):
+
+```sh
+git clone --no-checkout https://github.com/onekey-sec/unblob.git unblob-26.6.4
+git -C unblob-26.6.4 checkout --detach 1fcc7a0a584a70a96c31f5a276c20944d199a089
+```
+
+This obtains source only. Follow that revision's installation instructions on
+Linux to prepare the tool and its external extractors, then set
+`REA_UNBLOB_COMMAND` to the installed executable as shown above.
 
 Normal REA builds and npm packages do not include or build these sources or
 engine binaries. See [upstream provenance](https://github.com/morluto/rea/blob/main/third_party/README.md).

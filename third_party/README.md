@@ -48,7 +48,11 @@ is needed. APKs and JARs are neither tracked nor included in npm packages.
 | Binwalk | <https://github.com/ReFirmLabs/binwalk> | v3.1.0 | `4fdab3d464d97b68e0af9088df3f9e2e1545b21c` | MIT, upstream `LICENSE` |
 | Unblob | <https://github.com/onekey-sec/unblob> | 26.6.4 | `1fcc7a0a584a70a96c31f5a276c20944d199a089` | MIT, upstream `LICENSE` |
 
-Source remains unmodified in `third_party/binwalk` and `third_party/unblob`.
+Binwalk source remains unmodified in the `third_party/binwalk` submodule.
+Unblob is an optional, separately obtained Linux tool: its source revision stays
+pinned above and in the release record, but its source is not a submodule.
+Its upstream test fixtures contain filenames that Windows cannot check out, so
+including it would break recursive clones even when firmware extraction is unused.
 Release records live in `src/firmware/FirmwareRelease.ts`; REA adapters own the
 CLI/report interpretation and lifecycle in `src/firmware/`. Caller-supplied
 executables retain their actual launcher digest and unknown source revision;
@@ -56,5 +60,5 @@ version output alone does not establish source identity. REA does not bundle
 extractors or download/install firmware engines during analysis.
 
 On updates: inspect actual pinned CLI and report producers, preserve licenses,
-update gitlinks/release records, run report regressions and the real firmware
+update the applicable gitlink and release records, run report regressions and the real firmware
 lane. See [firmware setup and coverage](../docs/firmware-analysis.md).
